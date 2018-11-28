@@ -14,17 +14,48 @@ class UserService extends Base {
       firstName,
       lastName,
       password,
+      isLoggedIn: true,
       timestamp: ts
     };
 
     return this.create(newUser);
   }
 
-  login(data) {}
+  login(data) {
+    return new Promise((resolve, reject) => {
+      const { email, password } = data;
+      const firstParam = {
+        firstField: 'email',
+        firstOperator: '==',
+        firstValue: email
+      };
+      const secondParam = {
+        secondField: 'password',
+        secondOperator: '==',
+        secondValue: password
+      };
 
-  logout() {
-    localStorage.clear();
+      this.compoundQuery(firstParam, secondParam)
+        .then(doc => {
+          this.update(doc.id, { isLoggedIn: true })
+            .then(user => {
+              return resolve(doc);
+            })
+            .catch(err => {
+              return reject(err);
+            });
+        })
+        .catch(err => {
+          return resolve(err);
+        });
+    });
+  }
+
+  logout(id) {
+    // set localStorage.clear(); on component
+    const change = { isLoggedIn: false };
+    return this.update(id, change);
   }
 }
 
-export default UserService;
+export default new UserService();

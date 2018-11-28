@@ -20,13 +20,33 @@ class Base {
   }
 
   query(params) {
-    const { first, operator, last } = params;
+    const { field, operator, value } = params;
     return new Promise((resolve, reject) => {
       this.ref
-        .where(first, operator, last)
+        .where(field, operator, value)
         .get()
         .then(docs => {
           resolve(docs);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  compoundQuery(firstParam, secondParam) {
+    const { firstField, firstOperator, firstValue } = firstParam;
+    const { secondField, secondOperator, secondValue } = secondParam;
+    return new Promise((resolve, reject) => {
+      this.ref
+        .where(firstField, firstOperator, firstValue)
+        .where(secondField, secondOperator, secondValue)
+        .get()
+        .then(docs => {
+          if (docs.length !== 1) {
+            return reject({ error: 'no valid user' });
+          }
+          return resolve(docs[0]);
         })
         .catch(err => {
           reject(err);
