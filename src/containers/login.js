@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, Card, Row } from 'react-materialize';
+import { Col, Card, Row, Button } from 'react-materialize';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class Login extends Component {
@@ -12,7 +12,17 @@ class Login extends Component {
       <div>
         <Row>
           <Col m={6} s={12}>
-            <Link to="/create">Login</Link>
+            <Card className = 'blue-grey darken-1' textClassName='white-text' title='Card title'>
+            <h1>Welcome To Bill-Splitter!</h1>  
+            <h2> Create an Account</h2>            
+            <form action="/action_page.php">
+                <input type="text" name="fname" placeholder="Username" /><br />
+                <input type="text" name="lname" placeholder="Password" /><br />
+                <Button waves='light'>
+                <Link to="/create">Login</Link>
+              </Button>
+              </form> 
+            </Card>
           </Col>
 
         </Row>
