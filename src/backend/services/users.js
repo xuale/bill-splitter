@@ -37,9 +37,12 @@ class UserService extends Base {
 
       this.compoundQuery(firstParam, secondParam)
         .then(doc => {
+          if (doc.length !== 1) {
+            return reject({ error: 'no value user' });
+          }
           this.update(doc.id, { isLoggedIn: true })
             .then(user => {
-              return resolve(doc);
+              return resolve(user);
             })
             .catch(err => {
               return reject(err);

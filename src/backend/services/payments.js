@@ -1,14 +1,17 @@
 import Base from './base';
 
-class PaymentService extends Base {
+class PaymentMethodService extends Base {
   constructor(path = 'payments') {
     super(path);
   }
 
-  // make payment
-  // remove friend
-  // get a single friend
-  // get many friends
+  add(method) {
+    return this.create(method);
+  }
+
+  remove(id) {
+    return this.delete(id);
+  }
 }
 
-export default PaymentService;
+export default new PaymentMethodService();

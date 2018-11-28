@@ -11,7 +11,33 @@ class Base {
       this.ref
         .add(data)
         .then(doc => {
-          resolve(doc.id);
+          resolve(doc);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  getById(id) {
+    return new Promise((resolve, reject) => {
+      this.ref
+        .doc(id)
+        .then(doc => {
+          resolve(doc);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  read() {
+    return new Promise((resolve, reject) => {
+      this.ref
+        .get()
+        .then(docs => {
+          resolve(docs);
         })
         .catch(err => {
           reject(err);
@@ -43,10 +69,7 @@ class Base {
         .where(secondField, secondOperator, secondValue)
         .get()
         .then(docs => {
-          if (docs.length !== 1) {
-            return reject({ error: 'no valid user' });
-          }
-          return resolve(docs[0]);
+          return resolve(docs);
         })
         .catch(err => {
           reject(err);

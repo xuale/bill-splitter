@@ -5,12 +5,19 @@ class TransactionService extends Base {
     super(path);
   }
 
-  pay() {}
+  pay(payment) {
+    return this.create(payment);
+  }
 
-  getAll(userId) {}
+  getAll(userId) {
+    const params = {
+      field: 'userId',
+      operator: '==',
+      value: userId
+    };
 
-  // create transaction
-  // get all user transactions
+    return this.query(params);
+  }
 }
 
-export default TransactionService;
+export default new TransactionService();
