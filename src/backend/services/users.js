@@ -14,8 +14,7 @@ class UserService extends Base {
       firstName,
       lastName,
       password,
-      isLoggedIn: true,
-      timestamp: ts
+      isLoggedIn: true
     };
 
     return this.create(newUser);

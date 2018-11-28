@@ -1,4 +1,4 @@
-import { db } from '../db';
+import { db, ts } from '../db';
 
 class Base {
   constructor(path) {
@@ -7,6 +7,8 @@ class Base {
   }
 
   create(data) {
+    data['createdAt'] = ts;
+
     return new Promise((resolve, reject) => {
       this.ref
         .add(data)
