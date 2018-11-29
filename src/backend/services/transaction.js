@@ -16,6 +16,7 @@ class TransactionService extends Base {
       value: userId
     };
 
+    // front end must deal with snapshot
     return this.query(params);
   }
 }
