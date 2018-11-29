@@ -15,20 +15,28 @@ import UserService from './backend/services/users';
 const { Header, Content, Footer } = Layout;
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
+	constructor(props) {
+		super(props);
+		const loggedIn = localStorage.getItem('isLoggedIn') == 'true';
+
+		this.state = {
+			loggedIn
+		};
+	}
 
 	logout() {
-    const id = localStorage.getItem("id");
+		const id = localStorage.getItem('id');
 		UserService.logout(id);
-		localStorage.clear();
-		this.forceUpdate();
-  }
-  
+    localStorage.clear();
+    const loggedIn = localStorage.getItem('isLoggedIn') == 'true';
+		this.setState({
+			loggedIn
+		});
+	}
+
 	render() {
 		console.log(localStorage.getItem('isLoggedIn'));
-		const loggedIn = localStorage.getItem('isLoggedIn') == 'true';
+		const { loggedIn } = this.state;
 		return (
 			<Router>
 				<div className="App">
@@ -40,19 +48,18 @@ class App extends Component {
 										<Link to="/">Split.io</Link>
 									</h1>
 								</Col>
-                <Col span={4} offset={4}>
-								{loggedIn && (
-									<Button type="danger" onClick={this.logout}>
-										Logout
-									</Button>
-                )}
-                </Col>
+								<Col span={4} offset={4}>
+									{loggedIn && (
+										<Button type="danger" onClick={this.logout}>
+											Logout
+										</Button>
+									)}
+								</Col>
 							</Row>
 						</Header>
 						<Content style={{ padding: '20px 50px', height: '85vh' }}>
 							<Route path="/" exact component={Login} />
 							<Route path="/create/" component={Create} />
-							<Route path="/camera/" exact component={Camera} />
 							<Route path="/pay/" component={Pay} />
 						</Content>
 						<Footer style={{ textAlign: 'center' }}>Made with 💜at UCLA</Footer>
