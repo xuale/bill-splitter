@@ -9,6 +9,10 @@ class PaymentMethodService extends Base {
     return this.create(method);
   }
 
+  getAll(userId) {
+    return this.getById(userId);
+  }
+
   remove(id) {
     return this.delete(id);
   }
