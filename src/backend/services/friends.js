@@ -33,6 +33,7 @@ class FriendService extends Base {
           const allUsers = values[0];
           const friends = values[1];
 
+          // probably wont work
           const friendObjs = allUsers.filter(function(obj) {
             const friend = friends.find(f => f.friendId === obj.id);
             return friend === null;

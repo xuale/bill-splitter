@@ -40,10 +40,13 @@ class Login extends Component {
     this.saveLoginLocally(user);
   }
 
-  saveLoginLocally(userId) {
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('id', userId);
-    // localStorage.setItem("firstName", firstName);
+  saveLoginLocally(user) {
+    const { id, firstName, lastName, isLoggedIn } = user;
+
+    localStorage.setItem('isLoggedIn', isLoggedIn);
+    localStorage.setItem('id', id);
+    localStorage.setItem('firstName', firstName);
+    localStorage.setItem('lastName', lastName);
 
     this.enterCreate();
   }

@@ -17,7 +17,17 @@ class UserService extends Base {
       isLoggedIn: true
     };
 
-    return this.create(newUser);
+    return new Promise((resolve, reject) => {
+      this.create(newUser)
+        .then(id => {
+          const user = newUser;
+          user.id = id;
+          resolve(user);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
   login(data) {
