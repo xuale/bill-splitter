@@ -1,31 +1,34 @@
 import React, { Component } from 'react';
-import { Col, Card, Row, Button } from 'react-materialize';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import linkState from 'linkstate';
+
+import UserService from '../backend/services/users';
 
 class Login extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      email: '',
+      password: '',
+      first_name: '',
+      last_name: '',
+      isNewAccount: false
+    };
   }
 
   render() {
+    const { username, password, isNewAccount } = this.state;
     return (
       <div>
-        <Row>
-          <Col m={6} s={12}>
-            <Card className = 'blue-grey darken-1' textClassName='white-text' title='Card title'>
-            <h1>Welcome To Bill-Splitter!</h1>  
-            <h2> Create an Account</h2>            
-            <form action="/action_page.php">
-                <input type="text" name="fname" placeholder="Username" /><br />
-                <input type="text" name="lname" placeholder="Password" /><br />
-                <Button waves='light'>
-                <Link to="/create">Login</Link>
-              </Button>
-              </form> 
-            </Card>
-          </Col>
-
-        </Row>
+        <h1>Split.io</h1>
+        {isNewAccount && 
+          <div>
+            <h3>Register</h3>
+            <input type="text" onInput={linkState(this, 'email')} placeholder="Email"/>
+          </div>
+        }
+        {!isNewAccount &&
+          <div></div>
+        }
       </div>
     );
   }
