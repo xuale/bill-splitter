@@ -12,6 +12,10 @@ const config = {
 firebase.initializeApp(config);
 
 const db = firebase.firestore();
+
+const settings = { timestampsInSnapshots: true };
+db.settings(settings);
+
 const ts = firebase.database.ServerValue.TIMESTAMP;
 
 export { db, ts };
