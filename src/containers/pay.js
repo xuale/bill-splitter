@@ -70,10 +70,10 @@ class Pay extends Component {
               </p>
               <Col>
                 {friends.map(function(friend, i) {
-                  const { id } = friend;
+                  const { firstName, lastName } = friend;
                   return (
                     <Row>
-                      <Col span={12}>{id}</Col>{' '}
+                      <Col span={12}>{`${firstName} ${lastName}`}</Col>{' '}
                       <Col span={12}>
                         <Input
                           placeholder="Enter Value To Pay"
