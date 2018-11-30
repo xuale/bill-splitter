@@ -9,10 +9,10 @@ class Pay extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			friends: [],
+			friends: ["alice", "bob", "lit"],
 			total: [],
-			firstName: 'test',
-			lastName: 'yes',
+			firstName: 'Anshul',
+			lastName: 'Aggarwal',
 			isCompleted: false
     };
     this.clickForPayment = this.clickForPayment.bind(this);
@@ -36,13 +36,28 @@ class Pay extends Component {
 			<Row style={{marginTop: '4rem'}}>
 				<Col span={8} offset={8}>
 					{isCompleted && (
-						<p></p>
+            <Card>
+						<p>Success</p>
+            <p><Button type="primary" onClick={this.clickForPayment} style={{margin: '8px'}}>Send Payments</Button></p>
+            </Card>
 					)}
 					{!isCompleted && (
 						<Card title="Pay">
 							<p style={{margin: '12px', textAlign: 'left'}}>
-								Receipt: { this.getName() }
+                Receipt: { this.getName() }
 							</p>
+              <Col>
+                {friends.map(function(friend, i) {
+                        return (
+                          <Row>
+                            <Col span={12}>{friend}</Col> <Col span={12}><Input placeholder="Enter Value To Pay" style={{margin: '12px', display: 'inline'}}/></Col>	
+                          </Row>
+                        );
+                    })}
+							</Col>
+              <p style={{margin: '12px', textAlign: 'right'}}>
+                <Button type="primary" onClick={this.clickForPayment} style={{margin: '8px'}}>Send Payments</Button>
+              </p>
 						</Card>
 					)}
 				</Col>
