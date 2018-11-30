@@ -10,7 +10,25 @@ class PaymentMethodService extends Base {
   }
 
   getAll(userId) {
-    return this.getById(userId);
+    // return this.getById(userId);
+    return new Promise((resolve, reject) => {
+      const params = {
+        field: 'id',
+        operator: '==',
+        value: userId
+      };
+      this.query(params)
+        .then(docs => {
+          let cards = [];
+          docs.forEach(doc => {
+            cards.push(doc.data());
+          });
+          resolve(cards);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
   remove(id) {
