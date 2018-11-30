@@ -33,6 +33,7 @@ class UserService extends Base {
   login(data) {
     return new Promise((resolve, reject) => {
       const { email, password } = data;
+
       const firstParam = {
         firstField: 'email',
         firstOperator: '==',
@@ -54,7 +55,9 @@ class UserService extends Base {
 
           this.update(userId, { isLoggedIn: true })
             .then(user => {
-              return resolve(user);
+              const newUser = data;
+              newUser.id = userId;
+              return resolve(newUser);
             })
             .catch(err => {
               return reject(err);

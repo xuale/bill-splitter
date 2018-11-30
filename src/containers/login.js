@@ -29,24 +29,21 @@ class Login extends Component {
 
   async register() {
     await UserService.register(this.state);
-    console.log('registered user');
     await this.login();
   }
 
   async login() {
-    console.log('logging in');
     const user = await UserService.login(this.state);
-    console.log(user);
     this.saveLoginLocally(user);
   }
 
   saveLoginLocally(user) {
-		const { id, firstName, lastName } = user;
+    const { id, firstName, lastName } = user;
 
-    localStorage.setItem("isLoggedIn", "true");
-		localStorage.setItem("id", id);
-		localStorage.setItem("firstName", firstName);
-		localStorage.setItem("lastName", lastName);
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('id', id);
+    localStorage.setItem('firstName', firstName);
+    localStorage.setItem('lastName', lastName);
 
     this.enterCreate();
   }
