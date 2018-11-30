@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Button, Row, Card, Col, Input, Icon, Modal } from 'antd';
 import linkState from 'linkstate';
 
 import PaymentMethodService from '../backend/services/payments';
 import FriendService from '../backend/services/friends';
-import { relativeTimeThreshold } from 'moment';
 
 class Create extends Component {
 	constructor(props) {
@@ -14,9 +14,10 @@ class Create extends Component {
 		this.state = {
 			addCard: false,
 			addFriend: false,
-			cards: [ { cardNumber: 1234123412341234 } ],
-			friends: [],
-			selectedFriends: [], // bitmap representing whether or not friend i  selected
+      cards: [ { cardNumber: 1234123412341234 }, { cardNumber: 1234567890123456} ],
+      currCard: 0,
+			friends: [ {id: 'xualexander'}, {id: 'epicchewy'}, {id: 'rhnkmr'}, {id: 'OmegaNAlpha'}],
+			selectedFriends: [0, 0, 0, 0], // bitmap representing whether or not friend i  selected
 			id,
 			cardNumber: '',
 			friendID: ''
@@ -29,7 +30,10 @@ class Create extends Component {
 		this.postCardNumber = this.postCardNumber.bind(this);
 
 		this.getCards = this.getCards.bind(this);
-		this.getFriends = this.getFriends.bind(this);
+    this.getFriends = this.getFriends.bind(this);
+    
+    this.selectCard = this.selectCard.bind(this);
+    this.selectFriend = this.selectFriend.bind(this);
 	}
 
 	componentDidMount() {
@@ -86,26 +90,22 @@ class Create extends Component {
 		this.setState({ addFriend: !addFriend });
 	}
 
+  selectCard(idx) {
+    // Only one can be selected at a time
+    this.setState({
+      currCard: 4*idx
+    });
+  }
+
 	selectFriend(idx) {
 		// Flips bitmap
 		const { selectedFriends } = this.state;
-		const newSelected = [];
-		selectedFriends.forEach((friend, i) => {
-			if (i === idx) {
-				newSelected.push(!friend);
-			} else {
-				newSelected.push(friend);
-			}
-    });
+		let newSelected = selectedFriends;
+    newSelected[idx] = !selectedFriends[idx];
+    console.log(newSelected);
     
-
-
 		this.setState({ selectedFriends: newSelected });
 	}
-
-	selectItem(elem) {
-    // flip color
-  }
 
 	truncateNumber(num) {
 		const tokens = num.toString();
@@ -113,8 +113,8 @@ class Create extends Component {
 	}
 
 	render() {
-		const { friends, cards, addCard, addFriend } = this.state;
-		const { truncateNumber, selectItem, selectFriend } = this;
+		const { friends, cards, selectedFriends, addCard, addFriend, currCard} = this.state;
+		const { truncateNumber, selectCard, selectFriend } = this;
 		return (
 			<div>
 				<Modal
@@ -164,48 +164,47 @@ class Create extends Component {
 								<Row>
 									{cards.map(function(card, i) {
 										if (i < 5) {
-											if (i === 0) {
-												return (
-													<Col span={4} key={i}>
-														<a onClick={() => selectItem(this)} style={{ color: 'green' }}>
-															<Icon type="credit-card" style={{ fontSize: '32px' }} />
-															{truncateNumber(card.cardNumber)}
-														</a>
-													</Col>
-												);
-											}
 											return (
-												<Col span={4}>
-													<a onClick={() => selectItem(this)}>
-														<Icon type="credit-card" style={{ fontSize: '32px' }} />
+												<Col span={4} key={i}>
+													<a onClick={() => selectCard(i)}>
+														<Icon type="credit-card" style={{ fontSize: '32px', display: 'block' }} />
 														{truncateNumber(card.cardNumber)}
 													</a>
 												</Col>
 											);
 										}
 									})}
-									<Col>
+									<Col span={4}>
 										<a onClick={this.toggleCardModal}>
 											<Icon type="plus" />
 										</a>
 									</Col>
 								</Row>
+                <Row>
+                  <Col span={4} offset={currCard}>
+                    <Icon type="caret-up" />
+                  </Col>
+                </Row>
 							</Card>
 							<Card style={{ marginTop: 16 }} type="inner" title="Choose Friends">
 								<Row>
 									{friends.map(function(friend, i) {
+                    let friendStyle = {fontSize: '32px', display: 'block'};
+                    if (selectedFriends[i]) {
+                      friendStyle['color'] = 'lightgreen';
+                    }
 										if (i < 5) {
 											return (
 												<Col span={4}>
 													<a onClick={() => selectFriend(i)}>
-														<Icon type="person" style={{ fontSize: '32px' }} />
+														<Icon type="user" style={friendStyle} />
 														{friend.id}
 													</a>
 												</Col>
 											);
 										}
 									})}
-									<Col>
+									<Col span={4}>
 										<a onClick={this.toggleFriendModal}>
 											<Icon type="plus" />
 										</a>
