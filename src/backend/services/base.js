@@ -8,7 +8,6 @@ class Base {
 
   create(data) {
     data['createdAt'] = ts;
-
     return new Promise((resolve, reject) => {
       this.ref
         .add(data)
@@ -25,6 +24,7 @@ class Base {
     return new Promise((resolve, reject) => {
       this.ref
         .doc(id)
+        .get()
         .then(doc => {
           resolve(doc);
         })
