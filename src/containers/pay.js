@@ -8,8 +8,10 @@ import { timingSafeEqual } from 'crypto';
 class Pay extends Component {
 	constructor(props) {
 		super(props);
+		const { location: { state: { friends } } } = this.props;
+		console.log(friends);
 		this.state = {
-			friends: [ 'alice', 'bob', 'lit' ],
+			friends,
 			total: [],
 			firstName: 'Anshul',
 			lastName: 'Aggarwal',
@@ -20,11 +22,12 @@ class Pay extends Component {
 	}
 
 	componentDidMount() {
-		const firstName = localStorage.getItem("firstName");
-		const lastName = localStorage.getItem("lastName");
+		const firstName = localStorage.getItem('firstName');
+		const lastName = localStorage.getItem('lastName');
 		this.setState({
-			firstName, lastName
-		})
+			firstName,
+			lastName
+		});
 	}
 
 	clickForPayment() {
@@ -58,9 +61,10 @@ class Pay extends Component {
 							<p style={{ margin: '12px', textAlign: 'left' }}>Receipt: {this.getName()}</p>
 							<Col>
 								{friends.map(function(friend, i) {
+									const { id } = friend;
 									return (
 										<Row>
-											<Col span={12}>{friend}</Col>{' '}
+											<Col span={12}>{id}</Col>{' '}
 											<Col span={12}>
 												<Input
 													placeholder="Enter Value To Pay"
@@ -71,11 +75,18 @@ class Pay extends Component {
 									);
 								})}
 							</Col>
-							<p style={{ margin: '12px', textAlign: 'right' }}>
-								<Button type="primary" onClick={this.clickForPayment} style={{ margin: '8px' }}>
-									Send Payments
-								</Button>
-							</p>
+							<Row>
+								<Col span={4} offset={4}>
+									<Button type="primary" onClick={this.clickForPayment} style={{ margin: '8px' }}>
+										Send Payments
+									</Button>
+								</Col>
+								<Col span={8} offset={4}>
+									<Button onClick={() => {this.props.history.push('/create')}} style={{ margin: '8px' }}>
+										Cancel
+									</Button>
+								</Col>
+							</Row>
 						</Card>
 					)}
 				</Col>

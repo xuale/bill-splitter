@@ -38,7 +38,8 @@ class Login extends Component {
   }
 
   saveLoginLocally(user) {
-    const { id, firstName, lastName } = user;
+		const { id, firstName, lastName } = user;
+		console.log(user);
 
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('id', id);

@@ -21,7 +21,9 @@ class App extends Component {
 
 		this.state = {
 			loggedIn
-		};
+    };
+    
+    this.logout = this.logout.bind(this);
 	}
 
 	logout() {
@@ -31,11 +33,10 @@ class App extends Component {
     const loggedIn = localStorage.getItem('isLoggedIn') == 'true';
 		this.setState({
 			loggedIn
-		});
+    });
 	}
 
 	render() {
-		console.log(localStorage.getItem('isLoggedIn'));
 		const { loggedIn } = this.state;
 		return (
 			<Router>

@@ -10,14 +10,15 @@ class Create extends Component {
 	constructor(props) {
 		super(props);
 		const id = localStorage.getItem('id');
+    console.log(id);
 
 		this.state = {
 			addCard: false,
 			addFriend: false,
-      cards: [ { cardNumber: 1234123412341234 }, { cardNumber: 1234567890123456} ],
-      currCard: 0,
-			friends: [ {id: 'xualexander'}, {id: 'epicchewy'}, {id: 'rhnkmr'}, {id: 'OmegaNAlpha'}],
-			selectedFriends: [0, 0, 0, 0], // bitmap representing whether or not friend i  selected
+			cards: [ { cardNumber: 1234123412341234 }, { cardNumber: 1234567890123456 } ],
+			currCard: 0,
+			friends: [ { id: 'xualexander' }, { id: 'epicchewy' }, { id: 'rhnkmr' }, { id: 'OmegaNAlpha' } ],
+			selectedFriends: [ 0, 0, 0, 0 ], // bitmap representing whether or not friend i  selected
 			id,
 			cardNumber: '',
 			friendID: ''
@@ -28,12 +29,13 @@ class Create extends Component {
 		this.toggleFriendModal = this.toggleFriendModal.bind(this);
 		this.truncateNumber = this.truncateNumber.bind(this);
 		this.postCardNumber = this.postCardNumber.bind(this);
+    this.addFriend = this.addFriend.bind(this);
 
 		this.getCards = this.getCards.bind(this);
-    this.getFriends = this.getFriends.bind(this);
-    
-    this.selectCard = this.selectCard.bind(this);
-    this.selectFriend = this.selectFriend.bind(this);
+		this.getFriends = this.getFriends.bind(this);
+
+		this.selectCard = this.selectCard.bind(this);
+		this.selectFriend = this.selectFriend.bind(this);
 	}
 
 	componentDidMount() {
@@ -64,20 +66,21 @@ class Create extends Component {
 			if (friend) {
 				selected.push(friends[i]);
 			}
-		});
+    });
+    console.log(selected);
 		this.props.history.push('/pay', { friends: selected });
 	}
 
 	async postCardNumber() {
 		const { cardNumber } = this.state;
-		// await PaymentMethodService.add({cardNumber});
-		//  this.getCards();
+		await PaymentMethodService.add({ cardNumber });
+		this.getCards();
 	}
 
 	async addFriend() {
 		const { id, friendID } = this.state;
-		// await FriendService.add(id, friendID);
-		//  this.getFriends();
+		await FriendService.add(id, friendID);
+		this.getFriends();
 	}
 
 	toggleCardModal() {
@@ -90,20 +93,20 @@ class Create extends Component {
 		this.setState({ addFriend: !addFriend });
 	}
 
-  selectCard(idx) {
-    // Only one can be selected at a time
-    this.setState({
-      currCard: 4*idx
-    });
-  }
+	selectCard(idx) {
+		// Only one can be selected at a time
+		this.setState({
+			currCard: 4 * idx
+		});
+	}
 
 	selectFriend(idx) {
 		// Flips bitmap
 		const { selectedFriends } = this.state;
 		let newSelected = selectedFriends;
-    newSelected[idx] = !selectedFriends[idx];
-    console.log(newSelected);
-    
+		newSelected[idx] = !selectedFriends[idx];
+		console.log(newSelected);
+
 		this.setState({ selectedFriends: newSelected });
 	}
 
@@ -113,7 +116,7 @@ class Create extends Component {
 	}
 
 	render() {
-		const { friends, cards, selectedFriends, addCard, addFriend, currCard} = this.state;
+		const { friends, cards, selectedFriends, addCard, addFriend, currCard } = this.state;
 		const { truncateNumber, selectCard, selectFriend } = this;
 		return (
 			<div>
@@ -129,19 +132,9 @@ class Create extends Component {
 						onInput={linkState(this, 'cardNumber')}
 						style={{ margin: '8px' }}
 					/>
-          <Input
-						placeholder="Expiration date (MM/YY)"
-						style={{ margin: '8px' }}
-					/>
-          <Input
-						placeholder="Name on card"
-						style={{ margin: '8px' }}
-					/>
-          <Input
-            placeholder="CVC"
-            type="password"
-						style={{ margin: '8px' }}
-					/>
+					<Input placeholder="Expiration date (MM/YY)" style={{ margin: '8px' }} />
+					<Input placeholder="Name on card" style={{ margin: '8px' }} />
+					<Input placeholder="CVC" type="password" style={{ margin: '8px' }} />
 				</Modal>
 				<Modal
 					title="Search for friend"
@@ -167,7 +160,10 @@ class Create extends Component {
 											return (
 												<Col span={4} key={i}>
 													<a onClick={() => selectCard(i)}>
-														<Icon type="credit-card" style={{ fontSize: '32px', display: 'block' }} />
+														<Icon
+															type="credit-card"
+															style={{ fontSize: '32px', display: 'block' }}
+														/>
 														{truncateNumber(card.cardNumber)}
 													</a>
 												</Col>
@@ -180,19 +176,19 @@ class Create extends Component {
 										</a>
 									</Col>
 								</Row>
-                <Row>
-                  <Col span={4} offset={currCard}>
-                    <Icon type="caret-up" />
-                  </Col>
-                </Row>
+								<Row>
+									<Col span={4} offset={currCard}>
+										<Icon type="caret-up" />
+									</Col>
+								</Row>
 							</Card>
 							<Card style={{ marginTop: 16 }} type="inner" title="Choose Friends">
 								<Row>
 									{friends.map(function(friend, i) {
-                    let friendStyle = {fontSize: '32px', display: 'block'};
-                    if (selectedFriends[i]) {
-                      friendStyle['color'] = 'lightgreen';
-                    }
+										let friendStyle = { fontSize: '32px', display: 'block' };
+										if (selectedFriends[i]) {
+											friendStyle['color'] = 'lightgreen';
+										}
 										if (i < 5) {
 											return (
 												<Col span={4}>
