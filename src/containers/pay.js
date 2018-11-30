@@ -31,7 +31,7 @@ class Pay extends Component {
   }
 
 	render() {
-    const { friends, total, firstname, lastname, isCompleted } = this.state;
+    const { friends, total, firstName, lastName, isCompleted } = this.state;
 		return (
 			<Row style={{marginTop: '4rem'}}>
 				<Col span={8} offset={8}>
@@ -41,7 +41,7 @@ class Pay extends Component {
 					{!isCompleted && (
 						<Card title="Pay">
 							<p style={{margin: '12px', textAlign: 'left'}}>
-								Receipt: { this.getName }
+								Receipt: { this.getName() }
 							</p>
 						</Card>
 					)}
