@@ -17,7 +17,17 @@ class UserService extends Base {
       isLoggedIn: true
     };
 
-    return this.create(newUser);
+    return new Promise((resolve, reject) => {
+      this.create(newUser)
+        .then(id => {
+          const user = newUser;
+          user.id = id;
+          resolve(user);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 
   login(data) {
@@ -35,11 +45,14 @@ class UserService extends Base {
       };
 
       this.compoundQuery(firstParam, secondParam)
-        .then(doc => {
-          if (doc.length !== 1) {
+        .then(snap => {
+          if (snap.docs.length !== 1) {
             return reject({ error: 'no value user' });
           }
-          this.update(doc.id, { isLoggedIn: true })
+
+          const userId = snap.docs[0].id;
+
+          this.update(userId, { isLoggedIn: true })
             .then(user => {
               return resolve(user);
             })

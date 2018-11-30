@@ -13,7 +13,7 @@ class Base {
       this.ref
         .add(data)
         .then(doc => {
-          resolve(doc);
+          resolve(doc.id);
         })
         .catch(err => {
           reject(err);
